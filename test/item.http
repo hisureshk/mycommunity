@@ -1,0 +1,18 @@
+POST http://localhost:3000/api/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzA4NTE4MSwiZXhwIjoxNzM3MTcxNTgxfQ.0XFAirwVy937B7kDJvRXiAMRk0j-IOd1nCH69uSS3ZY
+
+{
+    "name": "Object Oriented Programming",
+    "description": "OOP Book",
+    "price": 220.00,
+    "category": "Book",
+    "stock": 10,
+    "seller": "6787374dcbaaa853aed74f2b"
+}
+
+#####
+
+GET http://localhost:3000/api/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzA4NTE4MSwiZXhwIjoxNzM3MTcxNTgxfQ.0XFAirwVy937B7kDJvRXiAMRk0j-IOd1nCH69uSS3ZY

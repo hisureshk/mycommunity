@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNjkyMDA2NSwiZXhwIjoxNzM3MDA2NDY1fQ.A_XekvbWnR1B2jewrVUXaF2bX838ME4e2D4z53az9S4
+
+{
+    "buyer": "6787374dcbaaa853aed74f2b",
+    "seller": "67873fb03c4ecb4e39ef007c",
+    "totalAmount": 220.00,
+    "hashedOTP": "324567wer"
+}
+
+#####
+
+GET http://localhost:3000/api/orders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzE2MDY1OCwiZXhwIjoxNzM3MjQ3MDU4fQ.Gooh8wsUpEkOCTsNTmvfaEENximjXsWKokTBaHXGIt8
+
+
+##################
+
+DELETE http://localhost:3000/api/orders/678a95d407453d845ed36f69
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzE2MDY1OCwiZXhwIjoxNzM3MjQ3MDU4fQ.Gooh8wsUpEkOCTsNTmvfaEENximjXsWKokTBaHXGIt8
