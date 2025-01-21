@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { useFormik } from 'formik';
@@ -28,23 +28,27 @@ const validationSchema = Yup.object({
         .min(0, 'Stock cannot be negative'),
 });
 
-const categories = [
-    'Electronics',
-    'Clothing',
-    'Books',
-    'Home & Garden',
-    'Sports',
-    'Toys',
-    'Health & Beauty',
-    'Automotive',
-    'Other'
-];
-
 export default function AddItemPage() {
+    
     const router = useRouter();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const { user } = useAuth();
+
+    const [categories, setCategories] = useState<string[]>([]);
+    
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await api.get('/items/categories');
+                setCategories(response.data);
+            } catch (error) {
+                toast.error('Failed to fetch categories');
+            }
+        };
+    
+        fetchCategories();
+    }, []);
 
     const formik = useFormik({
         initialValues: {

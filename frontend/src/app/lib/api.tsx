@@ -19,6 +19,11 @@ export const login = async (email: string, password: string) => {
     return response.data;
 };
 
+export const categories = async () => {
+  const response = await api.get('/items/categories');
+  return response.data;
+};
+
 export const register = async (userData: {
     name: string;
     email: string;
