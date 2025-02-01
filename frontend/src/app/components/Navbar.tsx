@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import ThemeToggle from './ThemeToggle';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -23,7 +24,7 @@ export default function Navbar() {
                     <div className="flex items-center">
                         <Link href="/" className="flex-shrink-0">
                             <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                                Store
+                                <Image src="/images/IIIT.png" alt="Logo" width={220} height={120} />
                             </span>
                         </Link>
 

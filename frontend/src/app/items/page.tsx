@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useCart } from '../context/CartContext';
+import { CategoryDropdown } from '../components/CategoryDropdown';
 import { toast } from 'react-hot-toast';
 import api from '../lib/api';
 
@@ -15,6 +17,11 @@ interface Item {
     seller: string;
 }
 
+interface Category {
+    _id: string;
+    name: string;
+}
+
 export default function ItemsPage() {
     const [items, setItems] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
@@ -26,6 +33,7 @@ export default function ItemsPage() {
                 const response = await api.get('/items');
                 setItems(response.data);
             } catch (error) {
+                console.error('Failed to fetch items:', error);
                 toast.error('Failed to fetch items');
             } finally {
                 setLoading(false);
@@ -46,15 +54,19 @@ export default function ItemsPage() {
         });
         toast.success('Item added to cart');
     };
-    const [filters, setFilters] = useState({
-        category: '',
+    const [filters, setFilters] = useState<{
+        categories: string[];
+        search: string;
+        minPrice: string;
+        maxPrice: string;
+    }>({
+        categories: [],
         search: '',
         minPrice: '',
         maxPrice: '',
-        sort: ''
     });
     
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     
     useEffect(() => {
         const fetchCategories = async () => {
@@ -62,6 +74,7 @@ export default function ItemsPage() {
                 const response = await api.get('/items/categories');
                 setCategories(response.data);
             } catch (error) {
+                console.error('Failed to fetch categories:', error);
                 toast.error('Failed to fetch categories');
             }
         };
@@ -73,15 +86,15 @@ export default function ItemsPage() {
         const fetchItems = async () => {
             try {
                 const params = new URLSearchParams();
-                if (filters.category) params.append('category', filters.category);
+                if (filters.categories) params.append('category', filters.categories.join(','));
                 if (filters.search) params.append('search', filters.search);
                 if (filters.minPrice) params.append('minPrice', filters.minPrice);
                 if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
-                if (filters.sort) params.append('sort', filters.sort);
     
                 const response = await api.get(`/items?${params.toString()}`);
                 setItems(response.data);
             } catch (error) {
+                console.error('Failed to fetch items:', error);
                 toast.error('Failed to fetch items');
             } finally {
                 setLoading(false);
@@ -90,6 +103,10 @@ export default function ItemsPage() {
     
         fetchItems();
     }, [filters]);
+
+    const handleCategoryChange = (selectedCategories: string[]) => {
+        setFilters(prev => ({ ...prev, selectedCategories }));
+    };
     
     
     if (loading) {
@@ -116,31 +133,13 @@ export default function ItemsPage() {
                             onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
                             className="flex-1 rounded-md border p-2"
                         />
-                        
-                        <select
-                            value={filters.category}
-                            onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
-                            className="rounded-md border p-2"
-                        >
-                            <option value="">All Categories</option>
-                            {categories.map(category => (
-                                <option key={category} value={category}>
-                                    {category}
-                                </option>
-                            ))}
-                        </select>
+
+                    <CategoryDropdown
+                        categories={categories}
+                        selectedCategories={filters.categories}
+                        onChange={handleCategoryChange}
+                    />
                 
-                        <select
-                            value={filters.sort}
-                            onChange={(e) => setFilters(prev => ({ ...prev, sort: e.target.value }))}
-                            className="rounded-md border p-2"
-                        >
-                            <option value="">Sort By</option>
-                            <option value="price_asc">Price: Low to High</option>
-                            <option value="price_desc">Price: High to Low</option>
-                            <option value="name_asc">Name: A to Z</option>
-                            <option value="name_desc">Name: Z to A</option>
-                        </select>
                         <input
                             type="number"
                             placeholder="Min Price"
@@ -164,11 +163,14 @@ export default function ItemsPage() {
                             key={item._id}
                             className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
                         >
+                            <Link href={`/items/detail?id=${item._id}`}>
+
                             <img
                                 src={'./images/item.png'}
                                 alt={item.name}
                                 className="w-full h-48 object-cover"
                             />
+                            </Link>
                             <div className="p-4">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                                     {item.name}

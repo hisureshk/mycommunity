@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "axios": "^1.7.9",
     "formik": "^2.4.6",
     "next": "15.1.4",

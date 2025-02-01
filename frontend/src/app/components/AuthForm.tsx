@@ -39,8 +39,9 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
         onSubmit: async (values) => {
             try {
                 await onSubmit(values);
-            } catch (error: any) {
-                toast.error(error.response?.data?.message || 'An error occurred');
+            } catch (error) {
+                console.error(error);
+                toast.error('An error occurred');
             }
         },
     });

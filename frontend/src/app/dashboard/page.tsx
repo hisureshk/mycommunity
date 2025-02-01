@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProfileEditForm from '../components/ProfileEditForm';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export default function DashboardPage() {
     const { user, login } = useAuth();
@@ -12,7 +13,7 @@ export default function DashboardPage() {
     const [isEditing, setIsEditing] = useState(false);
 
     if (!user) {
-        redirect('/login');
+        router.push('/login');
         return null;
     }
 
@@ -22,6 +23,7 @@ export default function DashboardPage() {
     };
 
     return (
+        <ProtectedRoute>    
         <div className="container mx-auto px-4 py-8">
             <div className="max-w-4xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
@@ -145,5 +147,6 @@ export default function DashboardPage() {
                 </div>
             </div>
         </div>
+        </ProtectedRoute>
     );
 }

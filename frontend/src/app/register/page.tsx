@@ -6,15 +6,23 @@ import { register } from '../lib/api';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 
+interface UserData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    sort: string;
+}
+
 export default function RegisterPage() {
     const { login } = useAuth();
 
-    const handleRegister = async (values: any) => {
+    const handleRegister = async (values: UserData) => {
         try {
             const data = await register(values);
             login(data);
             toast.success('Registered successfully');
-        } catch (error: any) {
+        } catch (error) {
             throw error;
         }
     };

@@ -47,6 +47,7 @@ export default function DeliverItemsPage() {
             const response = await api.get(`/orders/seller/${user._id}`);
             setOrders(response.data);
         } catch (error) {
+            console.error(error);
             toast.error('Failed to fetch orders');
         } finally {
             setLoading(false);
@@ -77,6 +78,7 @@ export default function DeliverItemsPage() {
 
             toast.success('Order status updated successfully');
         } catch (error) {
+            console.error(error);
             toast.error('Failed to update order status');
         }
     };
@@ -104,7 +106,8 @@ export default function DeliverItemsPage() {
                     </div>
                 ) : (
                     <div className="space-y-6">
-                        {orders.map((order) => (
+                        {orders.filter(order => order.items.some(item => item.item.seller === user._id && item.status !== 'delivered')).map((order) => (
+                       // {orders.map((order) => (
                             <div
                                 key={order._id}
                                 className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
@@ -125,7 +128,7 @@ export default function DeliverItemsPage() {
                                     </div>
 
                                     <div className="space-y-4">
-                                        {order.items.filter(item => item.item.seller === user._id).map((item) => (
+                                        {order.items.filter(item => item.item.seller === user._id && item.status !== 'delivered').map((item) => (
                                             <div key={item._id} 
                                                 className="flex items-center justify-between p-4 border rounded-lg"
                                             >

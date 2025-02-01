@@ -8,6 +8,11 @@ import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import  ReCAPTCHA  from  "react-google-recaptcha";
 
+interface Login {
+    email: string;
+    password: string;
+}
+
 export default function LoginPage() {
     const { login: authLogin } = useAuth();
 
@@ -29,6 +34,7 @@ export default function LoginPage() {
           }
         } catch (e) {
           setIsVerified(false);
+          console.error(e);
         }
       }
     
@@ -36,6 +42,9 @@ export default function LoginPage() {
         handleCaptchaSubmission(token);
       };
       function handleExpired() {
+        if(!isVerified) {
+          recaptchaRef.current?.reset();
+        }
         setIsVerified(false);
       }
 
@@ -43,12 +52,12 @@ export default function LoginPage() {
     console.log('Google recaptcha loaded just fine')
       }
 
-    const handleLogin = async (values: any) => {
+    const handleLogin = async (values: Login) => {
         try {
             const data = await login(values.email, values.password);
             authLogin(data);
             toast.success('Logged in successfully');
-        } catch (error: any) {
+        } catch (error) {
             throw error;
         }
     };

@@ -9,6 +9,11 @@ import { toast } from 'react-hot-toast';
 import api from '../../lib/api';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
+interface Category {
+    _id: string;
+    name: string;
+}
+
 const validationSchema = Yup.object({
     name: Yup.string()
         .required('Name is required')
@@ -31,11 +36,10 @@ const validationSchema = Yup.object({
 export default function AddItemPage() {
     
     const router = useRouter();
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const { user } = useAuth();
 
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     
     useEffect(() => {
         const fetchCategories = async () => {
@@ -43,6 +47,7 @@ export default function AddItemPage() {
                 const response = await api.get('/items/categories');
                 setCategories(response.data);
             } catch (error) {
+                console.error('Failed to fetch categories:', error);
                 toast.error('Failed to fetch categories');
             }
         };
@@ -57,7 +62,7 @@ export default function AddItemPage() {
             price: '',
             category: '',
             stock: '',
-            seller: user._id,
+            seller: '',
         },
         validationSchema,
         onSubmit: async (values) => {
@@ -74,8 +79,9 @@ export default function AddItemPage() {
                 await api.post('/items', itemData);
                 toast.success('Item added successfully');
                 router.push('/items');
-            } catch (error: any) {
-                toast.error(error.response?.data?.message || 'Failed to add item');
+            } catch (error) {
+                console.error('Failed to add item:', error);
+                toast.error('Failed to add item');
             } finally {
                 setUploading(false);
             }
@@ -133,7 +139,7 @@ export default function AddItemPage() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Price ($)
+                                        Price (₹)
                                     </label>
                                     <input
                                         id="price"
@@ -181,8 +187,8 @@ export default function AddItemPage() {
                                 >
                                     <option value="">Select a category</option>
                                     {categories.map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
+                                        <option key={category._id} value={category.name}>
+                                            {category.name}
                                         </option>
                                     ))}
                                 </select>

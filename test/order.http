@@ -13,7 +13,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY
 
 GET http://localhost:3000/api/orders
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzE2MDY1OCwiZXhwIjoxNzM3MjQ3MDU4fQ.Gooh8wsUpEkOCTsNTmvfaEENximjXsWKokTBaHXGIt8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczODM3ODM0MiwiZXhwIjoxNzM4NDY0NzQyfQ.HwSZrT8DCh3GtReXcSCcDhO2d41tSttUP1_8bzRRquI
 
 
 ##################
@@ -21,3 +21,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY
 DELETE http://localhost:3000/api/orders/678a95d407453d845ed36f69
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczNzE2MDY1OCwiZXhwIjoxNzM3MjQ3MDU4fQ.Gooh8wsUpEkOCTsNTmvfaEENximjXsWKokTBaHXGIt8
+
+
+##################
+GET http://localhost:3000/api/items/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczODM3ODM0MiwiZXhwIjoxNzM4NDY0NzQyfQ.HwSZrT8DCh3GtReXcSCcDhO2d41tSttUP1_8bzRRquI

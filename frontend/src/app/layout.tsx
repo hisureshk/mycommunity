@@ -5,6 +5,7 @@ import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 
 import './globals.css';
+//import ProtectedRoute from './components/ProtectedRoute';
 
 export default function RootLayout({
     children,
@@ -31,7 +32,7 @@ export default function RootLayout({
                             />
                             {children}
                         </CartProvider>
-                    </AuthProvider>
+                        </AuthProvider>
                 </ThemeProvider>
             </body>
         </html>

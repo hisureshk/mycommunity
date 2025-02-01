@@ -1,19 +1,52 @@
 const Item = require('../models/Item');
 const categories = [
-    'Electronics',
-    'Clothing',
-    'Books',
-    'Home & Garden',
-    'Sports',
-    'Toys',
-    'Health & Beauty',
-    'Automotive',
-    'Other'
+    { _id: 1, name: 'Electronics' },
+    { _id: 2, name: 'Clothing' },
+    { _id: 3, name: 'Books' },
+    { _id: 4, name: 'Home & Garden' },
+    { _id: 5, name: 'Sports' },
+    { _id: 6, name: 'Toys' },
+    { _id: 7, name: 'Health & Beauty' },
+    { _id: 8, name: 'Automotive' },
+    { _id: 9, name: 'Other' }
 ];
 
 exports.getAllItems = async (req, res) => {
     try {
-        const items = await Item.find({ seller: { $ne: req.user._id } });
+
+        const {
+            search,           // Search in name and description
+            minPrice,
+            maxPrice,
+            category,
+        } = req.query;
+
+        // Build query object
+        const query = {
+            seller: { $ne: req.user._id } // Exclude user's own items
+        };
+
+        // Search in both name and description using regex
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+          // Price range
+          if (minPrice !== undefined || maxPrice !== undefined) {
+            query.price = {};
+            if (minPrice !== undefined) query.price.$gte = Number(minPrice);
+            if (maxPrice !== undefined) query.price.$lte = Number(maxPrice);
+        }
+
+        // Category filter
+        if (category && category !== '') {
+            query.category = category;
+        }
+
+        const items = await Item.find(query);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

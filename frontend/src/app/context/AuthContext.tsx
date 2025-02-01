@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setAuthToken('');
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        router.push('/login');
+        router.replace('/login'); 
     };
 
     return (

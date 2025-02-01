@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import api from '../lib/api';
 
@@ -35,9 +35,11 @@ export default function CheckoutPage() {
             toast.success('Order placed successfully!');
             router.push('/orders');
         } catch (error) {
+            console.error('Error placing order:', error);
             toast.error('Failed to place order');
         } finally {
-            setLoading(false);
+            if(loading)
+                setLoading(false);
         }
     };
 

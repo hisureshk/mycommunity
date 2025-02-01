@@ -25,7 +25,8 @@ export const categories = async () => {
 };
 
 export const register = async (userData: {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }) => {
@@ -66,6 +67,7 @@ export async function POST(req: Request) {
       });
     }
   } catch (error) {
+    console.error("Error verifying token:", error);
     return new Response(JSON.stringify({ message: "Internal Server Error" }), {
       status: 500,
     });
