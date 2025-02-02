@@ -46,7 +46,8 @@ exports.getAllItems = async (req, res) => {
             query.category = category;
         }
 
-        const items = await Item.find(query);
+        const items = await Item.find(query)
+        .populate('seller', '-password')
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

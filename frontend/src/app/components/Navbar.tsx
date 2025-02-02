@@ -38,8 +38,11 @@ export default function Navbar() {
                                     <Link href="/orders" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                         Orders
                                     </Link>
+                                    <Link href="/items/add" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                        Sell
+                                    </Link>
                                     <Link href="/deliver-items" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                        Deliver Items
+                                        Deliver
                                     </Link>
                                 </>
                             )}
@@ -166,11 +169,18 @@ export default function Navbar() {
                                 Orders
                             </Link>
                             <Link
+                                href="/items/add"
+                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:bg-gray-50 dark:hover:text-white dark:hover:bg-gray-700"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sell 
+                            </Link>
+                            <Link
                                 href="/deliver-items"
                                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:bg-gray-50 dark:hover:text-white dark:hover:bg-gray-700"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                Deliver Items
+                                Deliver 
                             </Link>
                         </>
                     )}

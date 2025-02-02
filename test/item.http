@@ -17,6 +17,13 @@ GET http://localhost:3000/api/items
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczODM3ODM0MiwiZXhwIjoxNzM4NDY0NzQyfQ.HwSZrT8DCh3GtReXcSCcDhO2d41tSttUP1_8bzRRquI
 
+######
+DELETE http://localhost:3000/api/items/679e6a64af0a9f0e4377f45b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczODM3ODM0MiwiZXhwIjoxNzM4NDY0NzQyfQ.HwSZrT8DCh3GtReXcSCcDhO2d41tSttUP1_8bzRRquI
+
+
+
 
 #####
 GET http://localhost:3000/api/items/67873d74cbaaa853aed74f30

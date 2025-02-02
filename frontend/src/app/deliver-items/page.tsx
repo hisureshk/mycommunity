@@ -10,7 +10,8 @@ interface Item {
     name: string;
     price: number;
     image: string;
-    seller: string;
+    seller: any;
+    otp: string;
 }
 
 interface OrderItem {
@@ -19,6 +20,7 @@ interface OrderItem {
     status: string;
     quantity: number;
     price: number;
+    otp: string;
 }
 
 interface Order {
@@ -26,11 +28,7 @@ interface Order {
     items: OrderItem[];
     totalAmount: number;
     createdAt: string;
-    buyer: {
-        _id: string;
-        name: string;
-        email: string;
-    };
+    buyer: any;
 }
 
 export default function DeliverItemsPage() {
@@ -54,11 +52,18 @@ export default function DeliverItemsPage() {
         }
     };
 
-    const updateOrderStatus = async (orderId: string, itemId: string, newStatus: string) => {
+    const updateOrderStatus = async (orderId: string, itemId: string, newOtp: string) => {
         try {
-            await api.patch(`/orders/${orderId}/items/${itemId}`, {
-                status: newStatus
+            const itemOTP = document.getElementById('otp') as HTMLInputElement;
+            const newOtp = itemOTP != null ? itemOTP.value : '';
+            const resp = await api.patch(`/orders/${orderId}/items/${itemId}`, {
+                otp: newOtp,
+                status: 'delivered'
             });
+            if(resp.status !== 200) {
+                alert('Failed to update order status');
+                return;
+            }
             
             // Update local state
             setOrders(orders.map(order => {
@@ -67,7 +72,7 @@ export default function DeliverItemsPage() {
                         ...order,
                         items: order.items.map(item => {
                             if (item._id === itemId) {
-                                return { ...item, status: newStatus };
+                                return { ...item, otp: newOtp };
                             }
                             return item;
                         })
@@ -119,7 +124,7 @@ export default function DeliverItemsPage() {
                                                 Order #{order._id.slice(-8)}
                                             </h2>
                                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                Customer: {order.buyer.name}
+                                                Buyer: {order.buyer.firstName} {order.buyer.lastName}
                                             </p>
                                         </div>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -159,17 +164,21 @@ export default function DeliverItemsPage() {
                                                     }`}>
                                                         {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                                                     </span>
-
-                                                    <select
+                                                    <input
+                                                        type="text"
                                                         className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                                        value={item.status}
-                                                        onChange={(e) => updateOrderStatus(order._id, item._id, e.target.value)}
-                                                        disabled={item.status === 'delivered'}
+                                                        placeholder="Enter OTP"
+                                                        value={item.otp}
+                                                        minLength={6}
+                                                        maxLength={6}
+                                                        id = "otp" required
+                                                    />
+                                                    <button
+                                                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                                        onClick={() => updateOrderStatus(order._id, item._id, item.otp)}
                                                     >
-                                                        <option value="pending">Pending</option>
-                                                        <option value="processing">Processing</option>
-                                                        <option value="delivered">Delivered</option>
-                                                    </select>
+                                                        Deliver
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}

@@ -33,7 +33,7 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                 .min(6, 'Password must be at least 6 characters')
                 .required('Password is required'),
             ...(mode === 'register' && {
-                phone: Yup.string().required('Contact Number is required'),
+                phone: Yup.string().required('Phone Number is required'),
             }),
         }),
         onSubmit: async (values) => {

@@ -19,6 +19,12 @@ export const login = async (email: string, password: string) => {
     return response.data;
 };
 
+export const logout = () => {
+    setAuthToken('');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token'); 
+  };
+
 export const categories = async () => {
   const response = await api.get('/items/categories');
   return response.data;

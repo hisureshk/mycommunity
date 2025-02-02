@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { CategoryDropdown } from '../components/CategoryDropdown';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 
 interface Item {
@@ -14,7 +15,7 @@ interface Item {
     price: number;
     category: string;
     stock: number;
-    seller: string;
+    seller: any;
 }
 
 interface Category {
@@ -25,6 +26,7 @@ interface Category {
 export default function ItemsPage() {
     const [items, setItems] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
     const { addItem } = useCart();
 
     useEffect(() => {
@@ -158,7 +160,8 @@ export default function ItemsPage() {
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {items.map((item) => (
+                {items.filter(item => item.seller._id !== user._id).map((item) => (
+                   // {items.map((item) => (
                         <div 
                             key={item._id}
                             className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
@@ -179,7 +182,7 @@ export default function ItemsPage() {
                                     {item.description}
                                 </p>
                                 <p className="mt-2 text-gray-600 dark:text-gray-300">
-                                    Seller: {item.seller}
+                                    Seller: {item.seller.firstName} {item.seller.lastName}
                                 </p>
                                 <div className="mt-4 flex items-center justify-between">
                                     <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">

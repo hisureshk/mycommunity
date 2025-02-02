@@ -24,13 +24,15 @@ export default function CheckoutPage() {
                     item: item._id,
                     quantity: item.quantity,
                     price: item.price,
-                    seller: item.seller,
+                    seller: item.seller._id,
                     status: 'pending',  // Initial status for the item
                 })),
-                totalAmount
+                totalAmount,
+                otp: Math.floor(100000 + Math.random() * 900000).toString(),
             };
 
             await api.post('/orders', orderData);
+            alert('Please write down the below OTP and share with Seller to deliver.' + '\n' + 'Order OTP:: ' + orderData.otp);
             clearCart();
             toast.success('Order placed successfully!');
             router.push('/orders');
@@ -77,7 +79,7 @@ export default function CheckoutPage() {
                                         ₹{item.price.toFixed(2)}
                                     </p>
                                     <p className="text-gray-600 dark:text-gray-400">
-                                        Seller: {item.seller}
+                                        Seller: {item.seller.firstName} {item.seller.lastName}
                                     </p>
                                 </div>
                                 <div className="flex items-center space-x-2">

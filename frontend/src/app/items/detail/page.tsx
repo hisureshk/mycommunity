@@ -15,7 +15,7 @@ interface Item {
     price: number;
     category: string;
     stock: number;
-    seller: string;
+    seller: any;
     image?: string;
 }
 

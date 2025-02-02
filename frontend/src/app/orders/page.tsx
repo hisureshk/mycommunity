@@ -19,13 +19,14 @@ interface OrderItem {
 
 interface Order {
     _id: string;
+    buyer: any;
     items: OrderItem[];
     totalAmount: number;
     createdAt: string;
 }
 
 const OrdersPage = () => {
-    const [activeTab, setActiveTab] = useState('sold');
+    const [activeTab, setActiveTab] = useState('bought');
     const [soldOrders, setSoldOrders] = useState<Order[]>([]);
     const [boughtOrders, setBoughtOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
@@ -66,7 +67,7 @@ const OrdersPage = () => {
     };
     
 
-    const OrdersTable = ({ orders, type }: { orders: Order[], type: 'sold' | 'bought' }) => (
+    const OrdersTable = ({ orders, type }: { orders: Order[], type: 'bought' | 'sold' }) => (
         <div className="overflow-x-auto">
             <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-700">
@@ -120,7 +121,7 @@ const OrdersPage = () => {
                                     {new Date(order.createdAt).toLocaleDateString()}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
-                                    {type === 'sold' ? order._id : item.item._id}
+                                    {type === 'sold' ? order.buyer.firstName : item.item.name}
                                 </td>
                             </tr>
                         ))
@@ -148,16 +149,6 @@ const OrdersPage = () => {
                 <nav className="-mb-px flex">
                     <button
                         className={`mr-8 py-4 px-1 border-b-2 font-medium text-sm ${
-                            activeTab === 'sold'
-                                ? 'border-blue-500 text-blue-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }`}
-                        onClick={() => setActiveTab('sold')}
-                    >
-                        Orders Sold
-                    </button>
-                    <button
-                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
                             activeTab === 'bought'
                                 ? 'border-blue-500 text-blue-600'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -165,6 +156,16 @@ const OrdersPage = () => {
                         onClick={() => setActiveTab('bought')}
                     >
                         Orders Bought
+                    </button>
+                    <button
+                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                            activeTab === 'sold'
+                                ? 'border-blue-500 text-blue-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        }`}
+                        onClick={() => setActiveTab('sold')}
+                    >
+                        Orders Sold
                     </button>
                 </nav>
             </div>

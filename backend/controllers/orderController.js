@@ -3,13 +3,6 @@ const otpGenerator = require('otp-generator');
 const crypto = require('crypto');
 const { log } = require('console');
 
-// Generate a 6-digit numeric OTP
-const otp = otpGenerator.generate(6, { 
-  upperCaseAlphabets: false,
-  lowerCaseAlphabets: false,
-  specialChars: false,
-});
-
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find()
@@ -38,10 +31,13 @@ exports.getOrderById = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const order = new Order(req.body);
+        const newOtp = order.otp
+        order.otp = crypto.createHash('sha256').update(newOtp).digest('hex');
         const savedOrder = await order.save();
         const populatedOrder = await Order.findById(savedOrder._id)
             .populate('buyer', '-password')
             .populate('items.item');
+        populatedOrder.otp = newOtp;
         res.status(201).json(populatedOrder);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -70,8 +66,12 @@ exports.updateOrder = async (req, res) => {
 exports.updateOrderItemStatus = async (req, res) => {
     try {
         const { orderId, itemId } = req.params;
-        const { status } = req.body;
-        console.log("orderId", orderId, "itemId", itemId, "status", status);
+        const { otp, status } = req.body;
+        const order = await Order.findById(orderId);
+        const hashOtp = crypto.createHash('sha256').update(otp).digest('hex');
+        if( order.otp !== hashOtp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }
         const updatedOrder = await Order.findOneAndUpdate(
             { 
                 _id: orderId,
@@ -102,7 +102,7 @@ exports.getOrdersByUser = async (req, res) => {
     try {
         const orders = await Order.find({ buyer: req.params.userId })
             .populate('buyer', '-password')
-            .populate('items.item');
+            .populate('items.item.seller')
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -118,7 +118,8 @@ exports.getOrdersBySeller = async (req, res) => {
             }}
             })
             .populate('buyer', '-password')
-            .populate('items.item');
+            .populate('items.item')
+            .populate('items.item.seller');
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: error.message });
