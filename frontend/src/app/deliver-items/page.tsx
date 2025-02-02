@@ -4,14 +4,16 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Item {
     _id: string;
     name: string;
+    description: string;
     price: number;
-    image: string;
+    category: string;
     seller: any;
-    otp: string;
+    stock: string;
 }
 
 interface OrderItem {
@@ -20,7 +22,7 @@ interface OrderItem {
     status: string;
     quantity: number;
     price: number;
-    otp: string;
+    seller: string;
 }
 
 interface Order {
@@ -29,12 +31,14 @@ interface Order {
     totalAmount: number;
     createdAt: string;
     buyer: any;
+    otp: string;
 }
 
 export default function DeliverItemsPage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         fetchSellerOrders();
@@ -54,16 +58,12 @@ export default function DeliverItemsPage() {
 
     const updateOrderStatus = async (orderId: string, itemId: string, newOtp: string) => {
         try {
-            const itemOTP = document.getElementById('otp') as HTMLInputElement;
-            const newOtp = itemOTP != null ? itemOTP.value : '';
-            const resp = await api.patch(`/orders/${orderId}/items/${itemId}`, {
+            const itemOTP = document.getElementById(itemId) as HTMLInputElement;
+            const newOtp = (itemOTP) ? itemOTP.value : '';
+            const resp =  await api.patch(`/orders/${orderId}/items/${itemId}`, {
                 otp: newOtp,
                 status: 'delivered'
             });
-            if(resp.status !== 200) {
-                alert('Failed to update order status');
-                return;
-            }
             
             // Update local state
             setOrders(orders.map(order => {
@@ -82,9 +82,11 @@ export default function DeliverItemsPage() {
             }));
 
             toast.success('Order status updated successfully');
+            //router.push('/deliver-items');
+            window.location.reload();
         } catch (error) {
-            console.error(error);
-            toast.error('Failed to update order status');
+            console.error(error + ' ' + newOtp);
+            toast.error('Failed to update,  Invalid OTP ' + newOtp);
         }
     };
 
@@ -168,14 +170,13 @@ export default function DeliverItemsPage() {
                                                         type="text"
                                                         className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                                         placeholder="Enter OTP"
-                                                        value={item.otp}
                                                         minLength={6}
                                                         maxLength={6}
-                                                        id = "otp" required
+                                                        id = {item._id} required
                                                     />
                                                     <button
                                                         className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                                                        onClick={() => updateOrderStatus(order._id, item._id, item.otp)}
+                                                        onClick={() => updateOrderStatus(order._id, item._id, '')}
                                                     >
                                                         Deliver
                                                     </button>

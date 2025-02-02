@@ -41,5 +41,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY
 #################################
 
 
-DELETE http://localhost:3000/api/users/
+DELETE http://localhost:3000/api/users/678d17d355b8037e36186b57
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODczNzRkY2JhYWE4NTNhZWQ3NGYyYiIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTczODM3ODM0MiwiZXhwIjoxNzM4NDY0NzQyfQ.HwSZrT8DCh3GtReXcSCcDhO2d41tSttUP1_8bzRRquI
