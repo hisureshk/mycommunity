@@ -25,3 +25,29 @@ body {
         @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
     }
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+.sidebar-overlay {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sidebar-content {
+  animation: slideIn 0.3s ease-out;
+}

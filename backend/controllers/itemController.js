@@ -14,7 +14,7 @@ const categories = [
 exports.getAllItems = async (req, res) => {
     try {
 
-        const {
+        let {
             search,           // Search in name and description
             minPrice,
             maxPrice,
@@ -22,7 +22,7 @@ exports.getAllItems = async (req, res) => {
         } = req.query;
 
         // Build query object
-        const query = {
+        let query = {
             seller: { $ne: req.user._id } // Exclude user's own items
         };
 
@@ -41,10 +41,17 @@ exports.getAllItems = async (req, res) => {
             if (maxPrice !== undefined) query.price.$lte = Number(maxPrice);
         }
 
-        // Category filter
-        if (category && category !== '') {
-            query.category = category;
+        // Category filter & Handle multiple categories
+        if (category) {
+            const categories = category.split(',');
+            if (categories.length > 0) {
+                query = {
+                    ...query,
+                    category: { $in: categories }
+                };
+            }
         }
+        
 
         const items = await Item.find(query)
         .populate('seller', '-password')

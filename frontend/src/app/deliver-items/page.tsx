@@ -82,8 +82,8 @@ export default function DeliverItemsPage() {
             }));
 
             toast.success('Order status updated successfully');
-            //router.push('/deliver-items');
-            window.location.reload();
+            router.push('/deliver-items');
+            //window.location.reload();
         } catch (error) {
             console.error(error + ' ' + newOtp);
             toast.error('Failed to update,  Invalid OTP ' + newOtp);
