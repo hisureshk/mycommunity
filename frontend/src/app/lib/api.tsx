@@ -1,8 +1,27 @@
-import axios from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const api = axios.create({
     baseURL: process.env.BACKEND_API_URL || 'http://localhost:3000/api'
 });
+
+// Request interceptor
+api.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+        
+        // If token exists, add it to headers
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error: AxiosError) => {
+        // Handle request errors
+        console.error('Request Error:', error);
+        return Promise.reject(error);
+    }
+);
 
 export const setAuthToken = (token: string) => {
     if (token) {

@@ -30,7 +30,6 @@ export default function RootLayout({
                                     className: 'dark:bg-gray-800 dark:text-white'
                                 }}
                             />
-                            {children}
                         </CartProvider>
                         </AuthProvider>
                 </ThemeProvider>

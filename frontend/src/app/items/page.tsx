@@ -7,6 +7,7 @@ import { CategorySidebar } from '../components/CategorySidebar';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import ProtectedRoute from '../components/ProtectedRoute';
+import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../lib/api';
 
 interface Item {
@@ -26,8 +27,7 @@ interface Category {
 
 export default function ItemsPage() {
     const [items, setItems] = useState<Item[]>([]);
-    const [loading, setLoading] = useState(true);
-    const { user } = useAuth();
+    const { user , isLoading} = useAuth();
     const { addItem } = useCart();
     const [layout, setLayout] = useState({
         sidebarOpen: true,
@@ -41,9 +41,7 @@ export default function ItemsPage() {
             } catch (error) {
                 console.error('Failed to fetch items:', error);
                 toast.error('Failed to fetch items');
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
 
         fetchItems();
@@ -102,9 +100,7 @@ export default function ItemsPage() {
             } catch (error) {
                 console.error('Failed to fetch items:', error);
                 toast.error('Failed to fetch items');
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
     
         fetchItems();
@@ -113,15 +109,6 @@ export default function ItemsPage() {
     const handleCategoryChange = (selectedCategories: string[]) => {
         setFilters(prev => ({ ...prev, selectedCategories }));
     };
-    
-    
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
-        );
-    }
 
     return (
         <ProtectedRoute>

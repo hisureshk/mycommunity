@@ -6,13 +6,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProfileEditForm from '../components/ProfileEditForm';
 import ProtectedRoute from '../components/ProtectedRoute';
+import LoadingSpinner from '../components/LoadingSpinner';
+
 
 export default function DashboardPage() {
-    const { user, login } = useAuth();
+    const { user, isLoading, login } = useAuth();
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
 
-    if (!user) {
+    if (!isLoading && !user) {
         router.push('/login');
         return null;
     }
@@ -21,6 +23,14 @@ export default function DashboardPage() {
         login({ user: updatedUser, token: localStorage.getItem('token') });
         setIsEditing(true);
     };
+
+    if (isLoading) {
+        return (
+          <div className="min-h-screen flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        );
+      }
 
     return (
         <ProtectedRoute>    
