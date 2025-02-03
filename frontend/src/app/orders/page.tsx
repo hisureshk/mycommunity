@@ -10,11 +10,11 @@ interface OrderItem {
         name: string;
         price: number;
         image: string;
-
     };
     status: string;
     quantity: number;
     price: number;
+    seller: any;
 }
 
 interface Order {
@@ -121,7 +121,7 @@ const OrdersPage = () => {
                                     {new Date(order.createdAt).toLocaleDateString()}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
-                                    {type === 'sold' ? order.buyer.firstName : item.item.name}
+                                    {type === 'sold' ? order.buyer.firstName : item.seller.firstName}
                                 </td>
                             </tr>
                         ))

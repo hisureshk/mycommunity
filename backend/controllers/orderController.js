@@ -103,7 +103,7 @@ exports.getOrdersByUser = async (req, res) => {
         const orders = await Order.find({ buyer: req.params.userId })
             .populate('buyer', '-password')
             .populate('items.item')
-            .populate('items.item.seller');
+            .populate('items.seller');
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -120,7 +120,7 @@ exports.getOrdersBySeller = async (req, res) => {
             })
             .populate('buyer', '-password')
             .populate('items.item')
-            .populate('items.item.seller');
+            .populate('items.seller');
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: error.message });
