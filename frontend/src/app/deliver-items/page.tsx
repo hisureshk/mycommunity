@@ -22,7 +22,7 @@ interface OrderItem {
     status: string;
     quantity: number;
     price: number;
-    seller: string;
+    seller: any;
 }
 
 interface Order {

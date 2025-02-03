@@ -53,6 +53,9 @@ export default function CartPage() {
                                         <p className="text-gray-600 dark:text-gray-400">
                                             ${item.price.toFixed(2)}
                                         </p>
+                                        <p className="text-gray-600 dark:text-gray-400">
+                                            Seller: {item.seller.firstName} {item.seller.lastName}
+                                        </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <button

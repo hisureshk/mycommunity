@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
-import { useParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation'; // Change this from useParams
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import api from '../../lib/api';
@@ -24,14 +24,15 @@ export default function ItemDetailPage() {
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const { addItem } = useCart();
-    const params = useParams();
+    const router = useRouter();
+    const searchParams = useSearchParams(); // Use searchParams instead of params
+    const itemId = searchParams.get('id'); // Get the id from query params
 
     useEffect(() => {
         const fetchItem = async () => {
             try {
-                if (!params.id) return;           
-                const response = await api.get(`/items/${params.id}`);
-                console.log(" ###### Response is" + response.data);
+                if (!itemId) return;           
+                const response = await api.get(`/items/${itemId}`); // Use itemId here
                 setItem(response.data);
             } catch (error) {
                 toast.error('Failed to fetch item details');
@@ -42,7 +43,7 @@ export default function ItemDetailPage() {
         };
 
         fetchItem();
-    }, [params.id]);
+    }, [itemId]); // Change dependency to itemId
 
     const handleAddToCart = () => {
         if (!item) return;
@@ -52,10 +53,11 @@ export default function ItemDetailPage() {
             name: item.name,
             price: item.price,
             quantity: quantity,
-            image: item.image || '/images/default-item.png',
+            image: item.image || '/images/item.png',
             seller: item.seller
         });
         toast.success('Item added to cart');
+        router.push('/cart');
     };
 
     const handleQuantityChange = (change: number) => {
@@ -85,7 +87,7 @@ export default function ItemDetailPage() {
                         <div className="flex flex-col md:flex-row gap-6">
                             <div className="w-full md:w-1/2 relative">
                                 <Image
-                                    src={item.image || '/images/default-item.png'}
+                                    src={item.image || '/images/item.png'}
                                     alt={item.name}
                                     width={400}
                                     height={400}
@@ -105,7 +107,7 @@ export default function ItemDetailPage() {
 
                                 <div className="mb-4">
                                     <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                                        ${item.price.toFixed(2)}
+                                        ₹{item.price.toFixed(2)}
                                     </span>
                                 </div>
 
@@ -114,10 +116,7 @@ export default function ItemDetailPage() {
                                         Category: {item.category}
                                     </p>
                                     <p className="text-gray-600 dark:text-gray-400">
-                                        Seller: {item.seller}
-                                    </p>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Stock: {item.stock}
+                                        Seller: {item.seller.firstName} {item.seller.lastName}
                                     </p>
                                 </div>
 

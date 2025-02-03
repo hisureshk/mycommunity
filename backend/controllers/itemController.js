@@ -71,7 +71,8 @@ exports.getAllCategories = async (req, res) => {
 
 exports.getItemById = async (req, res) => {
     try {
-        const item = await Item.findById(req.params.id);
+        const item = await Item.findById(req.params.id)
+        .populate('seller', '-password');
         if (!item) {
             return res.status(404).json({ message: 'Item not found' });
         }
