@@ -83,7 +83,11 @@ export default function ItemDetailPage() {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    
                     <div className="p-6">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                            Item Details
+                    </h1>
                         <div className="flex flex-col md:flex-row gap-6">
                             <div className="w-full md:w-1/2 relative">
                                 <Image
